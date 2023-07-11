@@ -1,29 +1,86 @@
-<!-- virtual-therapist.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Virtual Therapist</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <title>Virtual Therapist</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Additional CSS Styles */
+    .title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .input-field {
+      flex: 1;
+      margin-right: 10px;
+    }
+
+    .send-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4c75ff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      animation: slide-in 0.3s ease-out;
+    }
+
+    .send-button:hover {
+      background-color: #1e4cff;
+    }
+
+    .response-container {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-input,
+    .bot-response {
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      animation: fade-in 0.3s ease-out;
+    }
+
+    .user-input {
+      background-color: #f1f1f1;
+    }
+
+    .bot-response {
+      background-color: #e8f5ff;
+    }
+
+    .loading {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Virtual Therapist</h1>
-        <div class="conversation">
-            {% if user_input %}
-            <div class="message user-message">
-                <p>{{ user_input }}</p>
-            </div>
-            {% endif %}
-            {% if bot_response %}
-            <div class="message bot-message">
-                <p>{{ bot_response }}</p>
-            </div>
-            {% endif %}
-        </div>
-        <form action="/virtual-therapist" method="POST">
-            <input type="text" name="user_input" placeholder="Type your message" required>
-            <button type="submit">Send</button>
-        </form>
+  <div class="container fade-in">
+    <h1 class="title">Virtual Therapist</h1>
+    <div class="form-container">
+      <input type="text" id="user_input" name="user_input" class="input-field" placeholder="Enter your message..." required>
+      <input type="button" value="Send" class="slide-in send-button">
     </div>
+    <div class="response-container" id="response_container">
+      {% if user_input %}
+        <p class="user-input">{{ user_input }}</p>
+      {% endif %}
+    </div>
+    <div class="loading" id="loading_indicator"></div>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

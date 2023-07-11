@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, jsonify, redirect
 import openai
 
 app = Flask(__name__)
@@ -25,38 +25,36 @@ def virtual_therapist():
         return redirect('/')
 
     if request.method == 'POST':
-        user_input = request.form['user_input']
-
-        # Use the OpenAI GPT-3 model to generate a response
+        user_input = request.json['user_input']
         bot_response = generate_response(user_input)
 
-        return render_template('virtual-therapist.html', user_input=user_input, bot_response=bot_response)
+        return jsonify({'bot_response': bot_response})
 
     return render_template('virtual-therapist.html')
 
 def validate_api_key(api_key):
     openai.api_key = api_key
 
-    # Test API call to validate the OpenAI API key
     try:
         response = openai.Completion.create(
             engine='text-davinci-003',
             prompt='Test',
             max_tokens=5
         )
-        # If the API call succeeds without raising an exception, the API key is considered valid
         return True
     except Exception as e:
-        # If the API call fails, the API key is considered invalid
         print(f"API key validation error: {str(e)}")
         return False
 
-
 def generate_response(user_input):
-    # Add your OpenAI API code here to generate the response based on the user input
-    # Replace the placeholder code below with your actual implementation
-    response = "Response from virtual therapist"
-    return response
+    response = openai.Completion.create(
+        engine='text-davinci-003',
+        prompt=user_input,
+        max_tokens=100,
+        temperature=0.8
+    )
+    bot_response = response.choices[0].text.strip()
+    return bot_response
 
 if __name__ == '__main__':
     app.run(debug=True)
