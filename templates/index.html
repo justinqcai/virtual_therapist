@@ -1,0 +1,20 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Therapist</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Virtual Therapist</h1>
+        <form action="/" method="POST">
+            <input type="text" name="api_key" placeholder="Enter your OpenAI API key" required>
+            <button type="submit">Start</button>
+            {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

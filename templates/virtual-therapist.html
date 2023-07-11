@@ -1,0 +1,29 @@
+<!-- virtual-therapist.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Therapist</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Virtual Therapist</h1>
+        <div class="conversation">
+            {% if user_input %}
+            <div class="message user-message">
+                <p>{{ user_input }}</p>
+            </div>
+            {% endif %}
+            {% if bot_response %}
+            <div class="message bot-message">
+                <p>{{ bot_response }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <form action="/virtual-therapist" method="POST">
+            <input type="text" name="user_input" placeholder="Type your message" required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>
