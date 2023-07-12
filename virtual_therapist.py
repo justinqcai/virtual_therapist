@@ -1,5 +1,12 @@
 from flask import Flask, request, render_template, jsonify, redirect
 import openai
+import random
+
+empathy_responses = [
+    "I can understand how challenging that must be.",
+    "I'm here to support you through this.",
+    "It's completely valid to feel the way you do."
+]
 
 app = Flask(__name__)
 api_key = None
@@ -47,14 +54,20 @@ def validate_api_key(api_key):
         return False
 
 def generate_response(user_input):
-    response = openai.Completion.create(
-        engine='text-davinci-003',
-        prompt=user_input,
-        max_tokens=100,
-        temperature=0.8
-    )
-    bot_response = response.choices[0].text.strip()
-    return bot_response
+    if "tell me about your day" in user_input.lower():
+        return random.choice(empathy_responses) + " How has your day been going?"
+    elif "I'm feeling anxious" in user_input.lower():
+        return random.choice(empathy_responses) + " Can you tell me more about what's been happening?"
+    else:
+        # Generate a general response if no specific prompt matches
+        response = openai.Completion.create(
+            engine='text-davinci-003',
+            prompt=user_input,
+            max_tokens=100,
+            temperature=0.8
+        )
+        bot_response = response.choices[0].text.strip()
+        return bot_response
 
 if __name__ == '__main__':
     app.run(debug=True)
