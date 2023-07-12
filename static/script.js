@@ -1,12 +1,27 @@
 document.addEventListener("DOMContentLoaded", function() {
   const userInputElement = document.getElementById("user_input");
-  const responseContainer = document.getElementById("response_container");
+  const chatContainer = document.getElementById("chat_container");
   const loadingIndicator = document.getElementById("loading_indicator");
+
+  function scrollToBottom() {
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  function appendMessage(containerClass, message) {
+    const messageContainer = document.createElement("div");
+    messageContainer.classList.add("message-container", containerClass);
+    messageContainer.innerHTML = `<p>${message}</p>`;
+    chatContainer.appendChild(messageContainer);
+    scrollToBottom();
+  }
 
   document.querySelector(".send-button").addEventListener("click", function() {
     const userInput = userInputElement.value.trim();
     if (userInput !== "") {
       userInputElement.value = ""; // Clear the input field
+
+      // Append user input to the chat container
+      appendMessage("user-input", userInput);
 
       // Show loading indicator
       loadingIndicator.innerHTML = "Loading...";
@@ -21,14 +36,11 @@ document.addEventListener("DOMContentLoaded", function() {
       })
         .then(response => response.json())
         .then(data => {
-          // Hide loading indicator
+          // Remove loading indicator
           loadingIndicator.innerHTML = "";
 
-          // Append user input and bot response to the response container
-          responseContainer.innerHTML += `
-            <p class="user-input">${userInput}</p>
-            <p class="bot-response">${data.bot_response}</p>
-          `;
+          // Append bot response to the chat container
+          appendMessage("bot-response", data.bot_response);
         })
         .catch(error => {
           console.error("Error:", error);

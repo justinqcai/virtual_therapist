@@ -11,11 +11,54 @@
       margin-bottom: 20px;
     }
 
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 20px;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #ccc #f8f8f8;
+    }
+
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 80%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      animation: fade-in 0.3s ease-out;
+    }
+
+    .user-input {
+      background-color: #f1f1f1;
+    }
+
+    .bot-response {
+      background-color: #e8f5ff;
+    }
+
     .form-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 20px;
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 10px;
     }
 
     .input-field {
@@ -39,47 +82,28 @@
       background-color: #1e4cff;
     }
 
-    .response-container {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .user-input,
-    .bot-response {
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      animation: fade-in 0.3s ease-out;
-    }
-
-    .user-input {
-      background-color: #f1f1f1;
-    }
-
-    .bot-response {
-      background-color: #e8f5ff;
-    }
-
     .loading {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
+      animation: fade-in 0.3s ease-out;
     }
   </style>
 </head>
 <body>
   <div class="container fade-in">
     <h1 class="title">Virtual Therapist</h1>
+    <div class="chat-container" id="chat_container">
+      {% if user_input %}
+        <div class="message-container user-input">
+          <p>{{ user_input }}</p>
+        </div>
+      {% endif %}
+    </div>
+    <div class="loading" id="loading_indicator"></div>
     <div class="form-container">
       <input type="text" id="user_input" name="user_input" class="input-field" placeholder="Enter your message..." required>
       <input type="button" value="Send" class="slide-in send-button">
     </div>
-    <div class="response-container" id="response_container">
-      {% if user_input %}
-        <p class="user-input">{{ user_input }}</p>
-      {% endif %}
-    </div>
-    <div class="loading" id="loading_indicator"></div>
   </div>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
